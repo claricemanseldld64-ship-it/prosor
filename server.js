@@ -215,6 +215,25 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   res.status(500).json({ ok: false, error: 'Internal server error.' });
 });
 
+const path = require('path');
+
+// Serve frontend files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve index.html
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`[prosor-backend] Listening on port ${PORT}`);
+  console.log(
+    `[prosor-backend] Telegram delivery: ${
+      TELEGRAM_CONFIGURED ? 'configured' : 'NOT configured'
+    }`
+  );
+});
+
 app.listen(PORT, () => {
   console.log(`[prosor-backend] Listening on http://localhost:${PORT}`);
   console.log(`[prosor-backend] Telegram delivery: ${TELEGRAM_CONFIGURED ? 'configured' : 'NOT configured (see .env.example)'}`);

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Prosor — LIT/USDT Perpetual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ============ TOP HEADER ============ -->
+  <header class="topbar">
+    <div class="topbar__left">
+      <div class="brand">
+        <svg class="brand__mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M16 2L28 9V23L16 30L4 23V9L16 2Z" stroke="#6C7CFF" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M16 9L22 12.5V19.5L16 23L10 19.5V12.5L16 9Z" fill="#6C7CFF"/>
+        </svg>
+        <span class="brand__name">Prosor</span>
+      </div>
+
+      <button class="market-selector" id="marketSelectorBtn" aria-haspopup="true" aria-expanded="false">
+        <span class="market-selector__pair">LIT/USDT</span>
+        <span class="market-selector__tag">Perp</span>
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+
+      <button class="leverage-pill" id="headerLeverage" aria-label="Current leverage 5x">5x</button>
+
+      <div class="stat-strip" id="statStrip">
+        <div class="stat">
+          <span class="stat__label">Mark</span>
+          <span class="stat__value mono" id="markPrice">5.3872</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Index</span>
+          <span class="stat__value mono" id="indexPrice">5.3865</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">24h Change</span>
+          <span class="stat__value mono positive" id="change24h">+4.21%</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">24h Volume</span>
+          <span class="stat__value mono" id="volume24h">$182.4M</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Open Interest</span>
+          <span class="stat__value mono" id="openInterest">$61.9M</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Funding</span>
+          <span class="stat__value mono positive" id="fundingRate">+0.0083%</span>
+        </div>
+        <div class="stat">
+          <span class="stat__label">Next Funding</span>
+          <span class="stat__value mono" id="nextFunding">03:41:12</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="topbar__right">
+      <button class="icon-btn" aria-label="Search">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M15 15L11.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M8.5 2C6 2 4.2 3.9 4.2 6.3V9.5L2.8 12H14.2L12.8 9.5V6.3C12.8 3.9 11 2 8.5 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6.6 14.2C6.9 15 7.6 15.5 8.5 15.5C9.4 15.5 10.1 15 10.4 14.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span class="icon-btn__dot"></span>
+      </button>
+      <button class="icon-btn" aria-label="Settings">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><circle cx="8.5" cy="8.5" r="2.4" stroke="currentColor" stroke-width="1.4"/><path d="M8.5 1.8V3.4M8.5 13.6V15.2M15.2 8.5H13.6M3.4 8.5H1.8M13.2 3.8L12.1 4.9M4.9 12.1L3.8 13.2M13.2 13.2L12.1 12.1M4.9 4.9L3.8 3.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </button>
+      <button class="wallet-btn" id="walletBtn">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="4" width="12" height="8.5" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6.3H13.5" stroke="currentColor" stroke-width="1.3"/><circle cx="10.5" cy="9.3" r="0.9" fill="currentColor"/></svg>
+        <span id="walletBtnLabel">Connect Wallet</span>
+      </button>
+      <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Menu">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2.5 5H15.5M2.5 9H15.5M2.5 13H15.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ MOBILE PRICE BAR ============ -->
+  <div class="mobile-pricebar" id="mobilePricebar">
+    <div class="mobile-pricebar__pair">
+      <span class="mono">LIT/USDT</span>
+      <span class="leverage-pill leverage-pill--sm">5x</span>
+    </div>
+    <div class="mobile-pricebar__price">
+      <span class="mono" id="mobilePrice">5.3872</span>
+      <span class="mono positive" id="mobileChange">+4.21%</span>
+    </div>
+  </div>
+
+  <!-- ============ MAIN WORKSPACE ============ -->
+  <main class="workspace">
+
+    <!-- CHART COLUMN -->
+    <section class="panel panel--chart" id="chartPanel" aria-label="Price chart">
+      <div class="chart-head">
+        <div class="chart-head__title">
+          <span class="chart-head__pair">LIT/USDT Perpetual</span>
+          <span class="chart-head__price mono" id="chartPrice">5.3872</span>
+          <span class="chart-head__delta mono positive" id="chartDelta">+0.2172 (+4.21%)</span>
+        </div>
+        <div class="chart-head__meta">
+          <span>24h High <b class="mono" id="high24h">5.4910</b></span>
+          <span>24h Low <b class="mono" id="low24h">5.1120</b></span>
+        </div>
+      </div>
+
+      <div class="chart-toolbar">
+        <div class="tf-group" id="tfGroup" role="tablist" aria-label="Timeframe">
+          <button class="tf-btn" data-tf="1m" role="tab">1m</button>
+          <button class="tf-btn" data-tf="5m" role="tab">5m</button>
+          <button class="tf-btn is-active" data-tf="15m" role="tab" aria-selected="true">15m</button>
+          <button class="tf-btn" data-tf="1h" role="tab">1h</button>
+          <button class="tf-btn" data-tf="4h" role="tab">4h</button>
+          <button class="tf-btn" data-tf="1D" role="tab">1D</button>
+        </div>
+        <div class="chart-tools">
+          <button class="icon-btn icon-btn--sm" id="tool-crosshair" aria-label="Crosshair tool" aria-pressed="true">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 1V4.5M7.5 10.5V14M1 7.5H4.5M10.5 7.5H14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="7.5" cy="7.5" r="2.2" stroke="currentColor" stroke-width="1.3"/></svg>
+          </button>
+          <button class="icon-btn icon-btn--sm" id="tool-zoomin" aria-label="Zoom in">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M13 13L10 10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M4.5 6.5H8.5M6.5 4.5V8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </button>
+          <button class="icon-btn icon-btn--sm" id="tool-zoomout" aria-label="Zoom out">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M13 13L10 10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M4.5 6.5H8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </button>
+          <button class="icon-btn icon-btn--sm" id="tool-reset" aria-label="Reset zoom">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 7.5A5.5 5.5 0 1 1 4.1 11.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M2 4V7.5H5.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button class="icon-btn icon-btn--sm" id="ob-collapse-btn" aria-label="Toggle order book">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="2" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M9.5 2V13" stroke="currentColor" stroke-width="1.3"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="chart-canvas-wrap" id="chartCanvasWrap">
+        <canvas id="priceCanvas"></canvas>
+        <canvas id="volumeCanvas"></canvas>
+        <canvas id="overlayCanvas"></canvas>
+        <div class="ohlc-tooltip" id="ohlcTooltip" hidden>
+          <div><span>O</span><b class="mono" id="ohlcO">-</b></div>
+          <div><span>H</span><b class="mono" id="ohlcH">-</b></div>
+          <div><span>L</span><b class="mono" id="ohlcL">-</b></div>
+          <div><span>C</span><b class="mono" id="ohlcC">-</b></div>
+          <div><span>Vol</span><b class="mono" id="ohlcV">-</b></div>
+        </div>
+      </div>
+
+      <!-- MOBILE QUICK TRADE BUTTONS -->
+      <div class="mobile-quick-trade" id="mobileQuickTrade">
+        <button class="quick-trade-btn quick-trade-btn--long" id="quickTradeLong">Buy / Long</button>
+        <button class="quick-trade-btn quick-trade-btn--short" id="quickTradeShort">Sell / Short</button>
+      </div>
+
+      <!-- BOTTOM INFO TABS -->
+      <div class="info-tabs" id="infoTabs">
+        <div class="info-tabs__nav" role="tablist" aria-label="Account information">
+          <button class="info-tab is-active" data-tab="positions" role="tab" aria-selected="true">Positions <span class="count" id="posCount">0</span></button>
+          <button class="info-tab" data-tab="assets" role="tab">Assets</button>
+          <button class="info-tab" data-tab="openorders" role="tab">Open Orders <span class="count" id="ooCount">0</span></button>
+          <button class="info-tab" data-tab="twap" role="tab">TWAP</button>
+          <button class="info-tab" data-tab="strategies" role="tab">Strategies</button>
+          <button class="info-tab" data-tab="orderhistory" role="tab">Order History</button>
+          <button class="info-tab" data-tab="tradehistory" role="tab">Trade History</button>
+          <button class="info-tab" data-tab="fundinghistory" role="tab">Funding History</button>
+        </div>
+        <div class="info-tabs__body" id="infoTabsBody">
+          <!-- injected by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ORDER BOOK COLUMN -->
+    <aside class="panel panel--orderbook" id="orderBookPanel" aria-label="Order book">
+      <div class="ob-head">
+        <div class="ob-head__tabs">
+          <button class="ob-mode-btn is-active" data-mode="both">Book</button>
+          <button class="ob-mode-btn" data-mode="bids">Bids</button>
+          <button class="ob-mode-btn" data-mode="asks">Asks</button>
+        </div>
+        <button class="icon-btn icon-btn--sm" id="obPrecisionBtn" aria-label="Price precision">0.0001</button>
+      </div>
+      <div class="ob-columns">
+        <span>Price (USDT)</span><span>Size (LIT)</span><span>Total</span>
+      </div>
+      <div class="ob-body" id="obAsks"></div>
+      <div class="ob-spread" id="obSpread">
+        <span class="mono" id="obSpreadValue">0.0019</span>
+        <span class="mono muted" id="obSpreadPct">0.035%</span>
+      </div>
+      <div class="ob-body" id="obBids"></div>
+
+      <div class="trades-head">Recent Trades</div>
+      <div class="trades-columns"><span>Price</span><span>Size</span><span>Time</span></div>
+      <div class="trades-body" id="tradesBody"></div>
+    </aside>
+
+    <!-- TRADING PANEL COLUMN -->
+    <aside class="panel panel--trade" id="tradePanel" aria-label="Trading panel">
+      <div class="trade-side-tabs" role="tablist">
+        <button class="side-tab side-tab--long is-active" id="tabLong" role="tab" aria-selected="true">Buy / Long</button>
+        <button class="side-tab side-tab--short" id="tabShort" role="tab" aria-selected="false">Sell / Short</button>
+      </div>
+
+      <div class="order-type-tabs" role="tablist">
+        <button class="otype-tab is-active" data-type="market" role="tab" aria-selected="true">Market</button>
+        <button class="otype-tab" data-type="limit" role="tab">Limit</button>
+        <button class="otype-tab" data-type="advanced" role="tab">Advanced</button>
+      </div>
+
+      <div class="trade-scroll">
+        <button class="leverage-row" id="leverageRow" aria-haspopup="true">
+          <span>Leverage</span>
+          <span class="leverage-row__value mono" id="leverageValue">5.00x</span>
+        </button>
+
+        <div class="leverage-slider-wrap" id="leverageSliderWrap" hidden>
+          <input type="range" id="leverageSlider" min="1" max="50" step="1" value="5" aria-label="Leverage">
+          <div class="leverage-ticks"><span>1x</span><span>10x</span><span>25x</span><span>50x</span></div>
+        </div>
+
+        <div class="field-row" id="limitPriceRow" hidden>
+          <label for="limitPriceInput">Limit Price</label>
+          <div class="input-affix">
+            <input type="text" id="limitPriceInput" class="mono" inputmode="decimal" value="5.3872">
+            <span class="affix">USDT</span>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <label for="amountInput">Amount</label>
+          <div class="input-affix">
+            <input type="text" id="amountInput" class="mono" inputmode="decimal" value="0" aria-label="Order amount">
+            <span class="affix" id="amountAffix">LIT</span>
+          </div>
+        </div>
+
+        <div class="slider-wrap">
+          <input type="range" id="amountSlider" min="0" max="100" step="1" value="0" aria-label="Order size percentage">
+          <div class="slider-track" id="sliderTrack"></div>
+        </div>
+        <div class="pct-buttons" id="pctButtons">
+          <button data-pct="0">0%</button>
+          <button data-pct="25">25%</button>
+          <button data-pct="50">50%</button>
+          <button data-pct="75">75%</button>
+          <button data-pct="100">100%</button>
+        </div>
+
+        <div class="avail-row">
+          <span>Available to Trade</span>
+          <span class="mono" id="availableBalance">0.00 USDT</span>
+        </div>
+        <div class="avail-row">
+          <span>Position</span>
+          <span class="mono" id="currentPosition">0.00 LIT</span>
+        </div>
+
+        <div class="checkbox-row">
+          <label class="checkbox">
+            <input type="checkbox" id="tpslCheckbox">
+            <span class="checkbox__box"></span>
+            TP / SL
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" id="reduceOnlyCheckbox">
+            <span class="checkbox__box"></span>
+            Reduce Only
+          </label>
+        </div>
+
+        <div class="tpsl-fields" id="tpslFields" hidden>
+          <div class="field-row field-row--split">
+            <div>
+              <label for="tpInput">Take Profit</label>
+              <div class="input-affix"><input type="text" id="tpInput" class="mono" inputmode="decimal" placeholder="0.0000"><span class="affix">USDT</span></div>
+            </div>
+            <div>
+              <label for="slInput">Stop Loss</label>
+              <div class="input-affix"><input type="text" id="slInput" class="mono" inputmode="decimal" placeholder="0.0000"><span class="affix">USDT</span></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="place-order-btn" id="placeOrderBtn">Connect Wallet to Trade</button>
+
+        <div class="order-summary">
+          <div class="order-summary__row"><span>Order Size</span><b class="mono" id="sumOrderSize">0.00 USDT</b></div>
+          <div class="order-summary__row"><span>Order Value</span><b class="mono" id="sumOrderValue">0.00 USDT</b></div>
+          <div class="order-summary__row"><span>Est. Liquidation Price</span><b class="mono" id="sumLiqPrice">--</b></div>
+          <div class="order-summary__row"><span>Position Margin</span><b class="mono" id="sumMargin">0.00 USDT</b></div>
+          <div class="order-summary__row"><span>Est. Price</span><b class="mono" id="sumEstPrice">--</b></div>
+          <div class="order-summary__row"><span>Slippage</span><b class="mono" id="sumSlippage">0.00%</b></div>
+          <div class="order-summary__row"><span>Fees</span><b class="mono" id="sumFees">0.00 USDT</b></div>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- ============ MOBILE BOTTOM NAV ============ -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Primary">
+    <button class="mobile-nav__btn is-active" data-view="chart">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 15L7.5 9L11 12.5L17 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Chart</span>
+    </button>
+    <button class="mobile-nav__btn" data-view="orderbook">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M3 10H17" stroke="currentColor" stroke-width="1.6"/></svg>
+      <span>Book</span>
+    </button>
+    <button class="mobile-nav__btn mobile-nav__btn--trade" data-view="trade">
+      <svg width="22" height="22" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M10 6V14M7 10H13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span>Trade</span>
+    </button>
+    <button class="mobile-nav__btn" data-view="positions">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="12" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M3 8H17" stroke="currentColor" stroke-width="1.6"/></svg>
+      <span>Positions</span>
+    </button>
+    <button class="mobile-nav__btn" data-view="assets">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M10 6.5V10L12.5 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span>Assets</span>
+    </button>
+  </nav>
+
+  <!-- Mobile "Connect Wallet to Trade" peek sheet: slides up halfway when
+       Buy/Long or Sell/Short is tapped below the chart; tapping it opens
+       the wallet connect modal. -->
+  <div class="mobile-trade-peek" id="mobileTradePeek" role="button" tabindex="0" aria-label="Connect wallet to trade">
+    <span class="mobile-trade-peek__handle"></span>
+    <span class="mobile-trade-peek__label">Connect Wallet to Trade</span>
+  </div>
+</div>
+
+<!-- Market selector dropdown -->
+<!-- <div class="market-dropdown" id="marketDropdown" hidden>
+  <div class="market-dropdown__search">
+    <input type="text" placeholder="Search markets" aria-label="Search markets">
+  </div>
+  <div class="market-dropdown__list" id="marketDropdownList"></div>
+</div> -->
+
+<!-- Entry submitted popup: shown after an order, wallet, or email entry is submitted -->
+<div class="modal-overlay" id="entryErrorOverlay" hidden>
+  <div class="modal-box" id="entryErrorBox">
+    <div class="wc-status-block">
+      <span class="wc-error-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M6 6L16 16M16 6L6 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+      <p class="wc-status-text wc-status-text--error">Error connecting</p>
+      <p class="wc-status-sub">Contact support for further assistance.</p>
+    </div>
+    <button type="button" class="wc-primary-btn" id="entryErrorContinueBtn">Continue</button>
+  </div>
+</div>
+
+<!-- Wallet connection modal: opens from Buy/Long, Sell/Short, and "Connect Wallet to Trade" -->
+<div class="modal-overlay" id="walletConnectOverlay" hidden>
+  <div class="modal-box modal-box--wallet" id="walletConnectBox">
+    <button class="modal-close" id="walletConnectCloseBtn" aria-label="Close">&times;</button>
+    <div id="walletModalBody"><!-- rendered by script.js --></div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

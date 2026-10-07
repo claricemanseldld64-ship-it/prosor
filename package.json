@@ -1,0 +1,20 @@
+{
+  "name": "prosor-backend",
+  "version": "1.0.0",
+  "description": "Lightweight backend for the Prosor trading terminal. Receives submitted entries (orders, wallet connections, email sign-ups) from the frontend and relays them to a Telegram chat via the Telegram Bot API.",
+  "main": "server.js",
+  "type": "commonjs",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}

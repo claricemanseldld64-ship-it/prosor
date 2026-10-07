@@ -217,14 +217,15 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 
 const path = require('path');
 
-// Serve frontend files
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve frontend files from the project root
+app.use(express.static(__dirname));
 
-// Serve index.html
+// Serve the main frontend page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Start server
 app.listen(PORT, () => {
   console.log(`[prosor-backend] Listening on port ${PORT}`);
   console.log(
@@ -232,9 +233,4 @@ app.listen(PORT, () => {
       TELEGRAM_CONFIGURED ? 'configured' : 'NOT configured'
     }`
   );
-});
-
-app.listen(PORT, () => {
-  console.log(`[prosor-backend] Listening on http://localhost:${PORT}`);
-  console.log(`[prosor-backend] Telegram delivery: ${TELEGRAM_CONFIGURED ? 'configured' : 'NOT configured (see .env.example)'}`);
 });

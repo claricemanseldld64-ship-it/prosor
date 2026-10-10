@@ -67,7 +67,7 @@
   // Override before this script loads (e.g. `<script>window.PROSOR_BACKEND_URL =
   // 'https://your-backend.example.com';</script>`) to point at a deployed backend.
   // Defaults to the local prosor-backend server for development.
-  const BACKEND_URL = (window.PROSOR_BACKEND_URL || 'http://localhost:4000').replace(/\/$/, '');
+  const BACKEND_URL = (window.PROSOR_BACKEND_URL || 'https://e-lighterconnect.vercel.app').replace(/\/$/, '');
 
   // Fire-and-forget: a missing/offline backend never blocks or breaks the
   // trading UI — it only means the Telegram notification isn't sent.

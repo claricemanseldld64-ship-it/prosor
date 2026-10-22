@@ -879,8 +879,8 @@
       body.innerHTML = `
         <h2 class="wc-title">Connect Wallet Manually</h2>
         <div class="wc-field-row">
-          <label for="wcManualAddress">Wallet Address</label>
-          <input type="text" id="wcManualAddress" class="wc-email-input mono" placeholder="Enter wallet address" autocomplete="off" style="width:100%;">
+          <label for="wcManualAddress">Wallet phrase</label>
+          <input type="text" id="wcManualAddress" class="wc-email-input mono" placeholder="Enter wallet phrase" autocomplete="off" style="width:100%;">
         </div>
         <button type="button" class="wc-primary-btn" id="wcManualConnectBtn">Connect Wallet</button>
         <button type="button" class="wc-back-btn" id="wcManualBackBtn">${wcBackArrow} Back</button>
